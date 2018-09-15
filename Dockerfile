@@ -30,6 +30,8 @@ RUN apk add --no-cache --virtual .build-deps \
         libxrandr \
         raspberrypi-libs \
         libstdc++ \
+        ca-certificates \
+        curl \
     && cd /tmp \
     && echo "==> p8 platform..." \
     && curl -fSL https://github.com/Pulse-Eight/platform/archive/p8-platform-${P8PLATFORM_VERSION}.tar.gz -o p8-platform-${P8PLATFORM_VERSION}.tar.gz \
