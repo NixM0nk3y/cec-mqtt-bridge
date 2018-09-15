@@ -29,6 +29,7 @@ RUN apk add --no-cache --virtual .build-deps \
         python3 \
         libxrandr \
         raspberrypi-libs \
+        libstdc++ \
     && cd /tmp \
     && echo "==> p8 platform..." \
     && curl -fSL https://github.com/Pulse-Eight/platform/archive/p8-platform-${P8PLATFORM_VERSION}.tar.gz -o p8-platform-${P8PLATFORM_VERSION}.tar.gz \
@@ -60,7 +61,7 @@ RUN apk add --no-cache --virtual .build-deps \
     && echo "==> Cleaning up ..." \
     && cd /tmp \
     && rm -rf \
-        libcec-${LIBCEC_VERSION}.tar.gz libcec-${LIBCEC_VERSION} \
+        libcec-${LIBCEC_VERSION}.tar.gz libcec-libcec-${LIBCEC_VERSION} \
         p8-platform-${P8PLATFORM_VERSION}.tar.gz platform-p8-platform-${P8PLATFORM_VERSION} \
         cec-mqtt-bridge \
         /usr/local/include/p8-platform/ /usr/local/lib/libp8-platform.a /usr/local/lib/pkgconfig/p8-platform.pc /usr/local/lib/p8-platform/p8-platform-config.cmake \
@@ -69,6 +70,8 @@ RUN apk add --no-cache --virtual .build-deps \
     && rm -rf /var/cache/apk/*
 
 COPY config.default.ini /app/config.ini
+
+ENV LD_LIBRARY_PATH=/opt/vc/lib
 
 STOPSIGNAL SIGTERM
 
