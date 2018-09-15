@@ -12,14 +12,15 @@ import os
 # Default configuration
 config = {
     'mqtt': {
-        'broker': 'localhost',
-        'port': 1883,
+        'broker': os.environ.get('MQTT_HOST'),
+        'port': 8883,
+        'ssl': 1,
         'prefix': 'media',
         'user': os.environ.get('MQTT_USER'),
         'password': os.environ.get('MQTT_PASSWORD'),
     },
     'cec': {
-        'enabled': 0,
+        'enabled': 1,
         'id': 1,
         'port': 'RPI',
         'devices': '0,1,2,3,4,5,6,7,8,9,10,11,12,13,14,15',
@@ -276,6 +277,13 @@ try:
     mqtt_client.on_message = mqtt_on_message
     if config['mqtt']['user']:
         mqtt_client.username_pw_set(config['mqtt']['user'], password=config['mqtt']['password']);
+    if config['mqtt']['ssl']:
+        mqtt_client.tls_set(
+            ca_certs='/etc/ssl/certs/ca-certificates.crt',
+            tls_version=ssl.PROTOCOL_TLSv1_2,
+            ciphers='ECDHE-RSA-AES256-GCM-SHA512:DHE-RSA-AES256-GCM-SHA512:ECDHE-RSA-AES256-GCM-SHA384:DHE-RSA-AES256-GCM-SHA384:ECDHE-RSA-AES256-SHA384',
+            )
+
     mqtt_client.connect(config['mqtt']['broker'], int(config['mqtt']['port']), 60)
     mqtt_client.loop_start()
 
