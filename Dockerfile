@@ -64,7 +64,7 @@ RUN apk add --no-cache --virtual .build-deps \
         p8-platform-${P8PLATFORM_VERSION}.tar.gz platform-p8-platform-${P8PLATFORM_VERSION} \
         cec-mqtt-bridge \
         /usr/local/include/p8-platform/ /usr/local/lib/libp8-platform.a /usr/local/lib/pkgconfig/p8-platform.pc /usr/local/lib/p8-platform/p8-platform-config.cmake \
-        /usr/local/include/libcec 
+        /usr/local/include/libcec \
     && apk del .build-deps \
     && rm -rf /var/cache/apk/*
 
