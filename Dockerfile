@@ -51,6 +51,8 @@ RUN apk add --no-cache --virtual .build-deps \
     && cmake -D RPI_INCLUDE_DIR=/opt/vc/include -D RPI_LIB_DIR=/opt/vc/lib .. \
     && make \
     && make install \
+    && ln -s /usr/local/lib/python3.6/site-packages/cec /usr/lib/python3.6/site-packages \
+    && ln -s /usr/local/lib/python3.6/site-packages/cec/_cec.so /usr/lib/python3.6/ \
     && cd /tmp \
     && echo "==> Installing cec-bride" \
     && mkdir /app \

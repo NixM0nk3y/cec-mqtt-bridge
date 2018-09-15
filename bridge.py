@@ -8,6 +8,7 @@ import re
 import configparser as ConfigParser
 import threading
 import os
+import ssl
 
 # Default configuration
 config = {
@@ -279,7 +280,7 @@ try:
         mqtt_client.username_pw_set(config['mqtt']['user'], password=config['mqtt']['password']);
     if config['mqtt']['ssl']:
         mqtt_client.tls_set(
-            ca_certs='/etc/ssl/certs/ca-certificates.crt',
+            ca_certs='/etc/ssl/cert.pem',
             tls_version=ssl.PROTOCOL_TLSv1_2,
             ciphers='ECDHE-RSA-AES256-GCM-SHA512:DHE-RSA-AES256-GCM-SHA512:ECDHE-RSA-AES256-GCM-SHA384:DHE-RSA-AES256-GCM-SHA384:ECDHE-RSA-AES256-SHA384',
             )
