@@ -2,12 +2,12 @@
 #
 #
 
-FROM arm32v6/alpine:3.8
+FROM alpine:3.16
 
 LABEL maintainer="Nick Gregory <docker@openenterprise.co.uk>"
 
-ARG LIBCEC_VERSION="4.0.2"
-ARG LIBCEC_SHA256="b8b8dd31f3ebdd5472f03ab7d401600ea0d959b1288b9ca24bf457ef60e2ba27"
+ARG LIBCEC_VERSION="6.0.2"
+ARG LIBCEC_SHA256="090696d7a4fb772d7acebbb06f91ab92e025531c7c91824046b9e4e71ecb3377"
 
 ARG P8PLATFORM_VERSION="2.1.0.1"
 ARG P8PLATFORM_SHA256="064f8d2c358895c7e0bea9ae956f8d46f3f057772cb97f2743a11d478a0f68a0"
@@ -31,6 +31,8 @@ RUN apk add --no-cache --virtual .build-deps \
         raspberrypi-libs \
         libstdc++ \
     && cd /tmp \
+    && python3 -m ensurepip \
+    && pip3 install --no-cache --upgrade pip setuptools \
     && echo "==> p8 platform..." \
     && curl -fSL https://github.com/Pulse-Eight/platform/archive/p8-platform-${P8PLATFORM_VERSION}.tar.gz -o p8-platform-${P8PLATFORM_VERSION}.tar.gz \
     && echo "${P8PLATFORM_SHA256}  p8-platform-${P8PLATFORM_VERSION}.tar.gz" | sha256sum -c - \
@@ -42,18 +44,19 @@ RUN apk add --no-cache --virtual .build-deps \
     && make install \
     && cd /tmp \
     && echo "==> libcec..." \
-    && curl -fSL https://github.com/Pulse-Eight/libcec/archive/libcec-${LIBCEC_VERSION}.tar.gz -o libcec-${LIBCEC_VERSION}.tar.gz \
+    && curl -fSL https://github.com/Pulse-Eight/libcec/archive/refs/tags/libcec-${LIBCEC_VERSION}.tar.gz -o libcec-${LIBCEC_VERSION}.tar.gz \
     && echo "${LIBCEC_SHA256}  libcec-${LIBCEC_VERSION}.tar.gz" | sha256sum -c - \
     && tar xzf libcec-${LIBCEC_VERSION}.tar.gz \
     && ls -l /tmp \
     && mkdir /tmp/libcec-libcec-${LIBCEC_VERSION}/build \
     && cd /tmp/libcec-libcec-${LIBCEC_VERSION}/build \
-    && cmake -D RPI_INCLUDE_DIR=/opt/vc/include -D RPI_LIB_DIR=/opt/vc/lib .. \
+    && cmake -D CMAKE_CXX_FLAGS="-fpermissive" -D RPI_INCLUDE_DIR=/opt/vc/include -D RPI_LIB_DIR=/opt/vc/lib .. \
     && make \
     && make install \
-    && ln -s /usr/local/lib/python3.6/site-packages/cec /usr/lib/python3.6/site-packages \
-    && ln -s /usr/local/lib/python3.6/site-packages/cec/_cec.so /usr/lib/python3.6/ \
-    && cd /tmp \
+    && ln -s /usr/local/lib/python3.6/site-packages/cec /usr/lib/python3.10/site-packages \
+    && ln -s /usr/local/lib/python3.6/site-packages/cec/_cec.so /usr/lib/python3.10/
+
+RUN cd /tmp \
     && echo "==> Installing cec-bride" \
     && mkdir /app \
     && git clone https://github.com/NixM0nk3y/cec-mqtt-bridge.git \
