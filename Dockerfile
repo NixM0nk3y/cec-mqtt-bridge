@@ -2,12 +2,12 @@
 #
 #
 
-FROM alpine:3.16
+FROM alpine:3.17
 
 LABEL maintainer="Nick Gregory <docker@openenterprise.co.uk>"
 
-ARG LIBCEC_VERSION="6.0.2"
-ARG LIBCEC_SHA256="090696d7a4fb772d7acebbb06f91ab92e025531c7c91824046b9e4e71ecb3377"
+ARG LIBCEC_VERSION="4.0.7"
+ARG LIBCEC_SHA256="bcd92c376993a5721d346edcc09eb17289451f9156b1d1d113c9663c2046315a"
 
 ARG P8PLATFORM_VERSION="2.1.0.1"
 ARG P8PLATFORM_SHA256="064f8d2c358895c7e0bea9ae956f8d46f3f057772cb97f2743a11d478a0f68a0"
@@ -50,14 +50,13 @@ RUN apk add --no-cache --virtual .build-deps \
     && ls -l /tmp \
     && mkdir /tmp/libcec-libcec-${LIBCEC_VERSION}/build \
     && cd /tmp/libcec-libcec-${LIBCEC_VERSION}/build \
-    && cmake -D CMAKE_CXX_FLAGS="-fpermissive" -D RPI_INCLUDE_DIR=/opt/vc/include -D RPI_LIB_DIR=/opt/vc/lib .. \
+    && cmake -D CMAKE_CXX_FLAGS="-fpermissive" -DHAVE_RPI_LIB=0 -DHAVE_LINUX_API=1 .. \
     && make \
     && make install \
-    && ln -s /usr/local/lib/python3.6/site-packages/cec /usr/lib/python3.10/site-packages \
-    && ln -s /usr/local/lib/python3.6/site-packages/cec/_cec.so /usr/lib/python3.10/
-
-RUN cd /tmp \
-    && echo "==> Installing cec-bride" \
+    && ln -s /usr/local/lib/python3.10/site-packages/_cec.so /usr/lib/python3.10/ \
+    && ln -s /usr/local/lib/python3.10/site-packages/cec.py /usr/lib/python3.10/ \
+    && cd /tmp \
+    && echo "==> Installing cec-bridge" \
     && mkdir /app \
     && git clone https://github.com/NixM0nk3y/cec-mqtt-bridge.git \
     && cd /tmp/cec-mqtt-bridge \

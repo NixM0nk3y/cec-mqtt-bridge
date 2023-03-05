@@ -23,7 +23,7 @@ config = {
     'cec': {
         'enabled': 1,
         'id': 1,
-        'port': 'RPI',
+        'port': 'Linux',
         'devices': '0,1,2,3,4,5,6,7,8,9,10,11,12,13,14,15',
     },
     'ir': {
