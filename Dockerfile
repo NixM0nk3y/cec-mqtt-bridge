@@ -2,7 +2,7 @@
 #
 #
 
-FROM alpine:3.17
+FROM alpine:3.21
 
 LABEL maintainer="Nick Gregory <docker@openenterprise.co.uk>"
 
@@ -27,11 +27,12 @@ RUN apk add --no-cache --virtual .build-deps \
     && apk add --no-cache \
         eudev \
         python3 \
+        py3-pip \
         libxrandr \
         raspberrypi-libs \
         libstdc++ \
     && cd /tmp \
-    && python3 -m ensurepip \
+    && python3 -m pip config set global.break-system-packages true \
     && pip3 install --no-cache --upgrade pip setuptools \
     && echo "==> p8 platform..." \
     && curl -fSL https://github.com/Pulse-Eight/platform/archive/p8-platform-${P8PLATFORM_VERSION}.tar.gz -o p8-platform-${P8PLATFORM_VERSION}.tar.gz \
@@ -53,8 +54,8 @@ RUN apk add --no-cache --virtual .build-deps \
     && cmake -D CMAKE_CXX_FLAGS="-fpermissive" -DHAVE_RPI_LIB=0 -DHAVE_LINUX_API=1 .. \
     && make \
     && make install \
-    && ln -s /usr/local/lib/python3.10/site-packages/_cec.so /usr/lib/python3.10/ \
-    && ln -s /usr/local/lib/python3.10/site-packages/cec.py /usr/lib/python3.10/ \
+    && ln -s /usr/local/lib/python3.12/site-packages/_cec.so /usr/lib/python3.12/ \
+    && ln -s /usr/local/lib/python3.12/site-packages/cec.py /usr/lib/python3.12/ \
     && cd /tmp \
     && echo "==> Installing cec-bridge" \
     && mkdir /app \
