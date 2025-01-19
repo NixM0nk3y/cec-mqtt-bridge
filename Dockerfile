@@ -26,6 +26,7 @@ RUN apk add --no-cache --virtual .build-deps \
         raspberrypi-dev \
     && apk add --no-cache \
         eudev \
+        eudev-libs \
         python3 \
         py3-pip \
         libxrandr \
