@@ -5,7 +5,7 @@ import paho.mqtt.client as mqtt
 import subprocess
 import time
 import re
-import configparser as ConfigParser
+import configparser
 import threading
 import os
 import ssl
@@ -216,7 +216,7 @@ def cleanup():
 try:
     ### Parse config ###
     try:
-        Config = ConfigParser.SafeConfigParser()
+        Config = configparser.ConfigParser()
         if Config.read("config.ini"):
 
             # Load all sections and overwrite default configuration
