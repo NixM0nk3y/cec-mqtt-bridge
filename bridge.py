@@ -282,7 +282,6 @@ try:
         mqtt_client.tls_set(
             ca_certs='/etc/ssl/cert.pem',
             tls_version=ssl.PROTOCOL_TLSv1_2,
-            ciphers='ECDHE-RSA-AES256-GCM-SHA512:DHE-RSA-AES256-GCM-SHA512:ECDHE-RSA-AES256-GCM-SHA384:DHE-RSA-AES256-GCM-SHA384:ECDHE-RSA-AES256-SHA384',
             )
 
     mqtt_client.connect(config['mqtt']['broker'], int(config['mqtt']['port']), 60)
