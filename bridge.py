@@ -276,13 +276,10 @@ try:
     mqtt_client = mqtt.Client("cec-ir-mqtt")
     mqtt_client.on_connect = mqtt_on_connect
     mqtt_client.on_message = mqtt_on_message
-    if config['mqtt']['user']:
-        mqtt_client.username_pw_set(config['mqtt']['user'], password=config['mqtt']['password']);
-    if config['mqtt']['ssl']:
-        mqtt_client.tls_set(
+    mqtt_client.tls_set(
             ca_certs='/etc/ssl/cert.pem',
             tls_version=ssl.PROTOCOL_TLSv1_2,
-            )
+    )
 
     mqtt_client.connect(config['mqtt']['broker'], int(config['mqtt']['port']), 60)
     mqtt_client.loop_start()
