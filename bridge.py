@@ -278,7 +278,6 @@ try:
     mqtt_client.on_message = mqtt_on_message
     mqtt_client.tls_set(
             ca_certs='/etc/ssl/cert.pem',
-            tls_version=ssl.PROTOCOL_TLSv1_2,
     )
 
     mqtt_client.connect(config['mqtt']['broker'], int(config['mqtt']['port']), 60)
