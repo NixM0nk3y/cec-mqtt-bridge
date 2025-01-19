@@ -92,3 +92,10 @@ The bridge publishes to the following topics:
 * https://github.com/nvella/mqtt-cec
 * http://www.cec-o-matic.com/
 * http://wiki.kwikwai.com/index.php?title=The_HDMI-CEC_bus
+
+# start notes
+
+docker container stop cec-mqtt-bridge
+docker container rm cec-mqtt-bridge
+ 
+docker run --privileged --network host -e MQTT_HOST=metrics.home.openenterprise.co.uk -v /dev:/dev -v /sys:/sys --restart unless-stopped --name cec-mqtt-bridge nixm0nk3y/libreelec-mqtt-cec:latest 
